@@ -3,7 +3,7 @@ ARG ASTERISK_VER=18
 ARG DEBIAN_FRONTEND=noninteractive
 
 #update & install required
-RUN apt-get update && apt-get upgrade && apt-get install -y wget tar net-tools iputils-ping nano patch apt-utils
+RUN apt-get update && apt-get upgrade && apt-get install -y apt-utils wget tar net-tools iputils-ping nano patch
 
 WORKDIR /usr/local/src
 
@@ -42,5 +42,7 @@ RUN make distclean && \
     #&& \
 #    rm -r /usr/local/src/asterisk
 
+COPY modules.conf /etc/asterisk/modules.conf
+
 #start Asterisk
-CMD /etc/init.d/asterisk start
+CMD /etc/init.d/asterisk start && /bin/bash
