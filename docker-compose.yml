@@ -1,0 +1,32 @@
+version: '3'
+services:
+  asterisk:
+    image: tiscaliasterisk:latest
+    container_name: asterisk
+    stdin_open: true
+    tty: true
+    networks:
+      network-asterisk:
+        ipv4_address: 192.168.2.3
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      TZ: 'Europe/Rome'
+    volumes:
+      - '/home/dietpi/etc-asterisk:/etc/asterisk'
+    restart: unless-stopped
+    extra_hosts:
+      - ims.tiscali.net:94.32.130.112
+
+networks:
+  network-asterisk:
+    name: network-asterisk
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: "192.168.2.0/24"
+          ip_range: "192.168.2.3/32"
+          gateway: "192.168.2.1"
